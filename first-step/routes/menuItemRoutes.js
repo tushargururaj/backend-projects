@@ -31,7 +31,7 @@ router.get("/:taste", async (req,res) => {
     try{
     const taste = req.params.taste;
     if(taste == spicy || taste == sour || taste == sweet || taste == bitter){
-        const response = Menu.find({taste: taste});
+        const response = await Menu.find({taste: taste});
         if(!response){
             return res.status(404).json({error: "Dish with that taste doesn't exist"});
         } else {
@@ -46,4 +46,37 @@ router.get("/:taste", async (req,res) => {
     }
 
 })
+
+router.put("/:id", async (req,res) => {
+    try{
+    const menuId = req.params.id;
+    const data = req.body;
+    const response = await Menu.findByIdAndUpdate(menuId,data, {
+        new: true,
+        runValidators: true
+    });
+    if(!response){
+       return res.status(404).json({error: "Menu not found"});
+    }
+    console.log("data updated.");
+    res.status(200).json(response);
+}catch (err){
+    console.log(err);
+    res.status(500).json({error:"Internal server error :( "})
+}})
+
+router.delete("/:id", async (req,res) => {
+    try{
+    const menuId = req.params.id;
+    const response = await Menu.findByIdAndDelete(menuId);
+    if(!response){
+       return res.status(404).json({error: "Menu not found"});
+    }
+    console.log("data deleted.");
+    res.status(200).json(response);
+}catch (err){
+    console.log(err);
+    res.status(500).json({error:"Internal server error :( "})
+}})
+
 module.exports = router;
