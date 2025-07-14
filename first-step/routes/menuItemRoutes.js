@@ -27,4 +27,23 @@ router.get("/", async (req,res)=>{
     }
 })
 
+router.get("/:taste", async (req,res) => {
+    try{
+    const taste = req.params.taste;
+    if(taste == spicy || taste == sour || taste == sweet || taste == bitter){
+        const response = Menu.find({taste: taste});
+        if(!response){
+            return res.status(404).json({error: "Dish with that taste doesn't exist"});
+        } else {
+            console.log("Data fetched successfully!");
+            res.status(200).json(response);
+        }
+    } else {
+        res.status(404).json({error: "Invalid aste type"});
+    } } catch(err){
+        console.log(err);
+        res.status(500).json({error: "Internal server error :("})
+    }
+
+})
 module.exports = router;
