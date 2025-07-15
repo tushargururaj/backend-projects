@@ -5,7 +5,9 @@ const Person = require('./models/person');
 const Menu = require('./models/menu');
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
-const PORT = 3000;
+
+require('dotenv').config();
+const PORT = process.env.PORT || 3000;
 
 
 app.get('/', (req,res)=>{
