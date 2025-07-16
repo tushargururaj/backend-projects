@@ -1,21 +1,31 @@
 const app = require('express')();
-const mongoose = require('mongoose');
 const db = require('./db');
-const Person = require('./models/person');
-const Menu = require('./models/menu');
-const bodyParser = require('body-parser');
-app.use(bodyParser.json());
-
+const passport = require("./auth");
 require('dotenv').config();
 const PORT = process.env.PORT || 3000;
 
 
-app.get('/', (req,res)=>{
-    console.log("All okay!");
+const bodyParser = require('body-parser');
+app.use(bodyParser.json());
+
+
+//middleware functions 
+const logRequest = (req,res,next) => {
+    console.log(`[${new Date().toLocaleString()}] Rest Made to : ${req.originalUrl}`);
+    next();
+}
+
+app.use(logRequest);
+
+app.use(passport.initialize());
+const localAuthMiddleware = passport.authenticate('local', {session: false});
+
+app.get('/', localAuthMiddleware, (req,res)=>{
+    res.send("Welcome to our hotel");
 })
 
 const personRoutes = require('./routes/personRoutes')
-app.use('/person', personRoutes);
+app.use('/person',localAuthMiddleware,personRoutes);
 
 const menuItemRoutes = require('./routes/menuItemRoutes');
 app.use('/menu', menuItemRoutes);
