@@ -2,6 +2,7 @@ const app = require('express')();
 const db = require('./db');
 const passport = require("./auth");
 require('dotenv').config();
+const {jwtAuthMiddleware, generateToken} = require("./jwt");
 const PORT = process.env.PORT || 3000;
 
 
@@ -25,7 +26,7 @@ app.get('/', localAuthMiddleware, (req,res)=>{
 })
 
 const personRoutes = require('./routes/personRoutes')
-app.use('/person',localAuthMiddleware,personRoutes);
+app.use('/person',jwtAuthMiddleware,personRoutes);
 
 const menuItemRoutes = require('./routes/menuItemRoutes');
 app.use('/menu', menuItemRoutes);
