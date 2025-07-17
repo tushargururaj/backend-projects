@@ -17,3 +17,19 @@ router.get("/", async (req,res)=>{
 }
 }
 )
+
+router.post("/", async (req,res) => {
+    try{
+    const data = req.body;
+    const newProduct = new Product(data);
+    const response = await newProduct.save();
+    console.log("Data successfully added.");
+    res.status(200).json(response);
+} catch(err){
+    console.log(err);
+    res.status(500).json({error: "Internal server issue :("});
+}
+})
+
+//router.put("/:id", async (req,res))
+module.exports = router;
