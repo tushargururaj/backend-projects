@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 require('dotenv').config();
 
-const mongoURL = process.env.MONGO_URL;
+const mongoURL = process.env.MONGO_URL || "mongodb://127.0.0.1:27017/inventory";
 
-const db = mongoose.connect(mongoURL);
-
+mongoose.connect(mongoURL);
+const db = mongoose.connection;
 db.on('connected', ()=>{
     console.log("Connection established.");
 })

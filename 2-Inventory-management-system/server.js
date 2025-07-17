@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const db = require('./db');
 const Product = require('./models/product');
 const productRoutes = require('./routes/productRoutes');
+PORT = 3000;
 
 app.use(bodyParser.json());
 
