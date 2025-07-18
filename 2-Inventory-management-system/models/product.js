@@ -51,7 +51,7 @@ productSchema.pre('save', async function(next){
 
 productSchema.methods.comparePassword = async function(pass){
     try{
-        const isMatch = await bcrypt.compare(pass, this.pass); // firsrt the password thats passed and the internal pass which idk
+        const isMatch = await bcrypt.compare(pass, this.password); // firsrt the password thats passed and the internal pass which idk
         return isMatch;
     } catch(err){
         throw err;
